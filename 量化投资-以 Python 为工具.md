@@ -30,7 +30,7 @@ id() 查看变量的内存地址
 
 ord("char") => num, chr(num) => char
 
-dir() 查看系统变量, dir(__buildin__) 查看内置模块和系统关键字
+dir() 查看系统变量, dir(__builtin__) 查看内置模块和系统关键字
 
 1. int/long 2.x 整数 2^-31~2^31, 超出后末尾自动加 `L`; 3.x 整数只受内存大小限制.
 2. float 值都是近似值, 无法进行金融计算.
@@ -66,9 +66,39 @@ Spyder 中将代码使用 `#%%` 分块, 可以以块为单位执行.
 
 设定当前工作路径的功能, 协助切换路径, 方便引入文件.
 
-## Python 运算符 TODO
+## Python 运算符
+
+数值(布尔,虚数)类型: + - * / **幂 //整除 %模
+字符串类型: +链接 *重复 %s格式化, "str"*n, "hello %s" %("justin")
+
+赋值运算: = += -= *= /= **= //= %=
+
+比较运算: == != > < >= <=, True == 1 成立, 但是 True == 2 不成立
+
+逻辑运算: and or not 都是惰性运算, 返回惰性值
+
+身份运算: is 和 is not, 比较的是内存地址. is 相当于用于判断 id(a) == id(b), is not 反之.
+
+成员运算: in 和 not in, 支持list[], tuple(), set{}和字符串
+
+1. ** 
+2. * / // %
+3. + -
+4. > >= < <=
+5. == !=
+6. = += -= *= /= **= //= %=
+7. is, is not
+8. in, not in
+9. and, or, not
+
+内置算数函数
+
+sum(iter, init=0), pow(x, y, z=None), divmod(x, y) => (x//y, x%y)
+abs(x), all(iter) => bool, any(iter) => bool, max(...), min(...), round(x, n)
 
 ## 语句
+
+
 
 ## 函数
 

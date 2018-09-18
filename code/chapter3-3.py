@@ -2,17 +2,22 @@
 
 # [1,2,3]
 a = [1,2,3]
-print a
+print(a)
+
 # [1,2,3]
 b = a
-print b
+print(b)
+
 # True
-print id(a) == id(b)
+print(id(a) == id(b))
 
 b[0] = 3
+
 # [3,2,3]
-print b
+print(b)
+
 # [3,2,3]
-print a
+print(a)
+
 # True
-print id(a) == id(b)
+print(id(a) == id(b))
