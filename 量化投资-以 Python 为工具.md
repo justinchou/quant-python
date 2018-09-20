@@ -6,7 +6,7 @@
 
 ## Python 编程小技巧
 
-```
+```python
 # -*- coding: UTF-8 -*-
 # 上面注释允许本文件以 UTF8 编码.
 ```
@@ -25,8 +25,8 @@
 3. 容器: list set dict tuple
 
 type() 查看某变量类型
-判断变量是否是某种类型: type(x) is int, type(x) == int, isinstance(x, int) 
-=> 区别在于判断B继承A时,  isinstance(B(), A) 真, type(B()) is A 假; 基础类型判断没有问题.
+判断变量是否是某种类型: type(x) is int, type(x) == int, isinstance(x, int)
+=> 区别在于判断 B 继承 A 时, isinstance(B(), A) 真, type(B()) is A 假; 基础类型判断没有问题.
 
 bool() 查看对象的布尔值
 id() 查看变量的内存地址
@@ -40,7 +40,7 @@ dir() 查看系统变量, dir(**builtin**) 查看内置模块和系统关键字
 3. bool 首字母要大些呢, True/1, False/0/""/''/[]/()/{}/None
 4. complex(x,y) 即为 x+yj, 虚数单位用 j/J 表示.
 5. string ""/''/""" ... """, 可以使用下标 s[id] 访问某个字符(但类型也是只有一个字符的字符串).
-6. list [...] 类似非强类型数组, 使用下标 l[id] 访问/赋值, 元素可改变(增加l.append(i)/删除/更改数据-值/类型)
+6. list [...] 类似非强类型数组, 使用下标 l[id] 访问/赋值, 元素可改变(增加 l.append(i)/删除/更改数据-值/类型)
 
 所有数值型, 字符串都是不可变对象.
 赋值只是将其指向另一个地址, 原数据还在, 重新赋值还指向原地址.
@@ -70,12 +70,12 @@ Spyder 中将代码使用 `#%%` 分块, 可以以块为单位执行.
 
 ## Python 运算符
 
-数值(布尔,虚数)类型: + - * / \*\*幂 //整除 %模
-字符串类型: +链接 *重复 %s 格式化, "str"\*n, "hello %s" %("justin")
+数值(布尔,虚数)类型: `+` `-` `*` `/` `**`幂 `//`整除 `%`模
+字符串类型: +链接 \*重复 %s 格式化, "str"\*n, "hello %s" %("justin")
 
-赋值运算: = += -= \*= /= \*\*= //= %=
+赋值运算: `=` `+=` `-=` `*=` `/=` `**=` `//=` `%=`
 
-比较运算: == != > < >= <=, True == 1 成立, 但是 True == 2 不成立
+比较运算: `==` `!=` `>` `<` `>=` `<=`, True == 1 成立, 但是 True == 2 不成立
 
 逻辑运算: and or not 都是惰性运算, 返回惰性值
 
@@ -83,12 +83,12 @@ Spyder 中将代码使用 `#%%` 分块, 可以以块为单位执行.
 
 成员运算: in 和 not in, 支持 list[], tuple(), set{}和字符串
 
-1. \*\*
-2. - / // %
-3. - -
-4. > > = < <=
-5. == !=
-6. = += -= \*= /= \*\*= //= %=
+1. `**`
+2. `-` `/` `//` `%`
+3. `+` `-`
+4. `>` `>=` `<` `<=`
+5. `==` `!=`
+6. `=` `+=` `-=` `*=` `/=` `**=` `//=` `%=`
 7. is, is not
 8. in, not in
 9. and, or, not
@@ -106,55 +106,125 @@ abs(x), all(iter) => bool, any(iter) => bool, max(...), min(...), round(x, n)
 2. y = [1,2]
 3. a = b = c = 5
 4. a, b, c = 1,2,3
-5. += -= *= /= **= //= %=
+5. += -= \*= /= \*\*= //= %=
 
 **条件: cond 无括号**
 
 if cond:
-  statement
+statement
 elif:
-  statement
+statement
 else:
-  statement
+statement
 
 **三元运算符**
 
-v1 if cond else v2 
+v1 if cond else v2
 相当于 cond ? v1 : v2
 
 **循环**
 
-for, while, 嵌套 => break退出循环, continue退出本次循环继续下一次, pass当前逻辑未写
+for, while, 嵌套 => break 退出循环, continue 退出本次循环继续下一次, pass 当前逻辑未写
 
-遍历序列: 
+遍历序列:
 
 for 循环 `for i in list:` 直接遍历的是值, 而非其他语言的 index
 如果遍历 index, 需要使用 `for id in range(len(list)):`
 
+```python
 for i in list/tuple/str:
   statement
 
 for i in range(len(list/tuple/str)):
   if cond:
     statement
+```
 
 如果循环处理某个序列值, 生成新序列, 可以简化成单条语句
 
+```python
 [statement for i in list/tuple/str]
 
 [statement for i in range(len(list/tuple/str)) if cond]
+```
 
 嵌套循环
 
+```python
 for i in x:
   for j in y:
     [i, j]
 
 [[i, j] for i in x for j in y]
+```
 
+```python
 while cond:
   statement
+```
 
 ## 函数
 
+```python
+def func(arg1, ..., argN=1):
+  expression
+  return None
+```
+
+return 是 return None 的简写, 函数可以没有 return 语句.
+空函数体要使用 `pass`
+
+超过一个返回值, 使用 tuple 实现: `return x,y,z`
+
+传参可以直接按顺序传, 也可以 `func(argN=1, ..., arg1=n)`
+
+不可变对象传参值传递, 可变对象传参引用传递
+
+可选参数:
+
+1. 参数打包后以[]/()/{}传参.
+2. \*tpl 表示 tuple, \*\*dct 表示 dict.
+
+匿名函数:
+lambda arg1...: expression
+
+作用域: 模块内函数外, 则全局可访问(函数内访问是只读, 加 global 变可写); 函数内, 函数局部可访问.
+
 ## 面向对象
+
+```python
+class ClassName(baseObject 默认 object):
+  """
+  一般的类注释
+  """
+
+  def __init__(self, id, price):
+    """
+    初始化方法, 必须传入股票的 id 和价格
+    """
+    # public
+    self.id = id
+    # private
+    self.__price = price
+
+  def debug(self):
+    print("%s price is %s" %(self.id, self.__price))
+
+  def getPrice(self):
+    return(self.__price)
+
+obj1 = ClassName(1, 12.5)
+obj2 = ClassName(2, 8.0)
+
+obj1.debug()
+
+```
+
+属性可以动态产生, 所以同一个类产生的对象, 不一定有相同的属性,
+但是必要的属性, 可以使用 `__init__` 方法添加, 必须在创建对象时传入.
+
+封装: 增加 private 概念, 使得有些内容只能内部访问, 要增加部分方法予以暴露.
+继承: 增加复用性, 抽象性(父类是多个子类的共性), 子类覆盖父类的方法称重写.
+
+## 标准库与数据库操作
+
