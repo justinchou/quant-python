@@ -228,3 +228,23 @@ obj1.debug()
 
 ## 标准库与数据库操作
 
+模块即为函数集合的文件, 文件名作为全局的变量(`__name__`)可以被其他模块导入
+
+```python
+# package file PriceAnalysis.py
+# 导入全部
+import PriceAnalysis
+PriceAnalysis.OpenPrice()
+
+# 别名
+import PriceAnalysis as prcAnsys
+prcAnsys.OpenPrice()
+
+# 导入某个方法
+from PriceAnalysis import OpenPrice
+OpenPrice()
+```
+
+搜索路径为 `os.getcwd()` -> `sys.path`
+
+**包** 文件夹必须有 `__init__.py` 文件, 但内容可以为空, 用以标记文件夹是否为包.
