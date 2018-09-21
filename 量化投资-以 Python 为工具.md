@@ -226,7 +226,9 @@ obj1.debug()
 封装: 增加 private 概念, 使得有些内容只能内部访问, 要增加部分方法予以暴露.
 继承: 增加复用性, 抽象性(父类是多个子类的共性), 子类覆盖父类的方法称重写.
 
-## 标准库与数据库操作
+## 标准库与数据操作
+
+### 模块
 
 模块即为函数集合的文件, 文件名作为全局的变量(`__name__`)可以被其他模块导入
 
@@ -247,4 +249,114 @@ OpenPrice()
 
 搜索路径为 `os.getcwd()` -> `sys.path`
 
+### 包
+
 **包** 文件夹必须有 `__init__.py` 文件, 但内容可以为空, 用以标记文件夹是否为包.
+
+```python
+import mainPkg.subPkg.className
+mainPkg.subPkg.className.funcName()
+
+from mainPkg.subPkg import className
+className.funcName()
+
+from mainPkg.subPkg.className import funcName
+funcName()
+```
+
+定义 `__init__.py` 支持 `import *`
+
+```python
+__all__ = [file1, file2...]
+```
+
+### 内置模块
+
+数学模块: math(float), cmath(int, float, complex)
+时间日期: calendar(获取, 显示), time(计算, 除了, 格式化), datetime.datetime
+
+calendar.isleap(2016)
+
+time.time(): timestamp
+time.struct_time((tm_year, tm_mon, tm_mday, tm_hour, tm_min, tm_sec, tm_wday, tm_yday, tm_isdst)): struct_time
+time.localtime(timestamp): strct_time
+time.asctime(structTime): str
+time.ctime(timestamp): str
+time.strptime(YmdStr, YmdTemplate): struct_time 用时间格式模板(例如"%Y-%m-%d")解析时间字符串("2018-09-21")
+time.strftime(YmdTemplate, structTime): str 将 struct 对象格式化成指定时间模板
+
+`Y/y-m/b/B-d H/I-M-S a/A/w/W/U` 年月日 时分秒 星期
+
+datetime.now(): datetime
+计算时间差, 返回 datetime.delta 类型, 可与 datetime 类型直接加减运算.
+str(dateTime): str
+dateTime.strftime(YmdTemplate): str
+dateTime.strptime(YmdStr, YmdTemplate): datetime
+
+### 内置数据类型操作
+
+#### 序列 list, tuple, range + str
+
+x (not) in s 是否在其中
+ns = `+` 链接, s * n 重复
+s[i] 取元素
+s[i,j,k] 切片, 不包括 j,  步长k默认1
+len(), min(), max()
+s.index(x, i, j) 索引值, 起点i默认0, 终点j默认 len() - 1
+s.count(x) 统计
+
+1. 创建 list([..]) | [..]
+
+s.append(x), s.extend([..]/(..))
+s.insert(i, x)
+x = s.pop(i) 第i个元素默认删最右端
+s.remove(x) 删左边第一次出现, 不存在报错, 所以先count统计判断
+s.sort() s.reverse() 升降序
+
+2. 创建 tuple((..)) | 逗号 | (..)
+
+列表->元组 tuple(list)
+字符串->元组 tuple(str)
+
+值不可变, 无个性化方法
+
+3. 创建 range(start, end, step)
+
+值不可变, 经常与 for 联合使用.
+
+无法直接查看其中枚举值, 只能将其转换成 tuple/list 查看
+
+range->列表: list(range)
+range->元组: tuple(range)
+
+不可以使用 `*` 进行重复
+
+4. 创建 str() | "",'',""" .. """
+
+str.split(spliter): list 默认空格分割
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
