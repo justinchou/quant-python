@@ -220,6 +220,31 @@ obj1.debug()
 
 ```
 
+继承的初始化和覆盖
+
+```python
+# 继承
+class Parent(object):
+  def __init__(self, argv1):
+    self.argv1 = argv1
+
+  def foo(self):
+    pass
+
+
+class Child(Parent):
+  def __init__(self, argv1, argv2):
+    Parent.__init__(self, argv1)
+    # 或者
+    super(Child, self).__init__(argv1)
+    
+    self.argv2 = argv2
+
+  def foo(self):
+    super(Child, self).foo()
+
+```
+
 属性可以动态产生, 所以同一个类产生的对象, 不一定有相同的属性,
 但是必要的属性, 可以使用 `__init__` 方法添加, 必须在创建对象时传入.
 
@@ -333,7 +358,47 @@ range->元组: tuple(range)
 
 4. 创建 str() | "",'',""" .. """
 
-str.split(spliter): list 默认空格分割
+s.split(spliter): list 默认空格分割
+str.join(iter): str 组合
+
+s.islower/isupper/istitle()
+s.lower/upper/title/capitalize/swapcase()
+词频统计, 最好先全部转换成小写, 避免首字母大写造成的问题.
+
+s.find/rfind/index/rindex(x) 不存在 find返回-1, index报错
+s.startswith/endswith(ns/tpl) 是否以 str, str元组开头
+s.strip/rstrip(rem) 删掉两端/末尾 rem 字符, 默认空白字符
+
+#### 字典
+
+创建 {}, dict({}), dict(k=v,...), dict((k,v),...), dict(zip([keyList], [valueList]))
+
+dic.items(): [(key, value), ...]
+dic.keys(): [key, ...]
+dic.values(): [value, ...]
+可以进行 for in 循环.
+
+查 dic[key], dic.get(key)
+改 dic[key] = val, dic.update(key=value)
+增 dic[nkey] = val
+删 del dic[key]
+清空 dic.clear() 删除所有 key, 返回空字典{}
+复制 ndic = dic.copy()
+
+
+#### 集合
+
+无序, 不重复, 不能索引. 列表转集合可以去重.
+
+创建可变集合 set() 或 {}
+创建不可变集合 frozenset()
+
+可变集合 st.add(v), st.remove(v)
+元素个数 len(st)
+遍历 for v in st:
+
+`∩` 交 union `|`, `∪` 并 interaction `&`, `-` 差 difference `-`, 对称差 symmetric_difference `^` (`∪`并-`∩`交)
+子集 issubset `<=`, 父集 issuperset `>=`, 无关 isdisjoint
 
 
 
@@ -359,4 +424,12 @@ str.split(spliter): list 默认空格分割
 
 
 
+
+
+
+
+
+
+
+## 使用函数库 Numpy 和 Pandas
 
