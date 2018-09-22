@@ -77,13 +77,21 @@ class CreditCardAccount(BankAccount):
         return False
 
     def getMyBill(self):
-        return {"totalCredit": self.__totalCredit, "usedCredit": self.__usedCredit, "balance": self.getBalance(), "bill": self.__bill}
+        bill = {"totalCredit": self.__totalCredit, "usedCredit": self.__usedCredit,
+                "balance": self.getBalance(), "bill": self.__bill}
+        return bill
 
 
 sam = CreditCardAccount("Sam", 1000, 1800)
+
 sam.withdrow(200)
 print(sam.getMyBill())
+
 sam.withdrow(1000)
 print(sam.getMyBill())
+
 sam.withdrow(800)
+print(sam.getMyBill())
+
+sam.withdrow(1000)
 print(sam.getMyBill())
