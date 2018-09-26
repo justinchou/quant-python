@@ -384,6 +384,7 @@ dic.values(): [value, ...]
 删 del dic[key]
 清空 dic.clear() 删除所有 key, 返回空字典{}
 复制 ndic = dic.copy()
+合并 ndic = dict(dic1, **dic2)
 
 
 #### 集合
@@ -432,4 +433,188 @@ dic.values(): [value, ...]
 
 
 ## 使用函数库 Numpy 和 Pandas
+
+### Numpy
+
+用于创建一维数组和二维矩阵(以及多维), 并对其进行运算
+
+```python
+import numpy as np
+arr1 = np.array(range(12)) # 初始化数组
+arr1.shape # 获取结构
+arrn.dtype # 可以查看数组item类型
+
+# 一维 <=> 二维
+arr1.shape = 3,4 # 更改结构
+arr2 = arr1.reshape(4,3) # 拷贝新结构, 原结构不变
+arr3 = arr1.reshape(2,3,4)
+## 上面的 arr1 和 arr2 值共用内存地址, 相当于同一个指针, 只不过结构部分不一致
+
+# 初始化
+arr4 = np.arange(0,6,2) # start stop step => int64数列(不含末尾值)
+arr5 = np.linspace(0,6,7) # start stop amount dtype=int?舍尾 => float64数列(包含末尾值)
+arr6 = np.zeros((2,3)) # 初始化占位符, 默认浮点型
+arr7 = np.ones((2,3), dtype=int/np.int16)
+
+# 切片
+arr[start:stop=start:step=1] # 切片, 负数从右向左, 切片与原数组共享内存(list并不是共享内存)
+
+# 二维
+arr[start:stop:step, start:stop:step] # 二位数组切片 [x横, y竖]
+arr[[a,b,c],[α,β,γ]]
+
+# 运算
+参数(arr1, num/arr2, target), 每个元素都加 num, 或者数组 arr2 对应元素相加.
+target = np.zeros((a,b), dtype=np.int16)
+
+1. np.add()  `+`
+2. np.substract()  `-`
+3. np.multipl()  `*`
+4. np.devide()  `/`
+5. np.mod()  `%`
+6. np.remainder()  `%`
+7. np.power()  `**`
+8. np.square()
+9. >/>= ... 数组中每一个元素都参与判断, 得出布尔结果
+0. cos()/sin() ... 数组中每个值都计算
+```
+
+### Pandas
+
+#### Series 序列
+
+value 和 index(可重复数据标记), value 本质上还是列表/numpy.array.
+
+```python
+import pandas as pd
+
+sr = pd.Series()
+sr = pd.Series(lst/np.arr, index=lst) # index 默认从 0 增长
+sr = pd.Series(dict)
+
+sr.value  # 值列表
+sr.index  # 索引列表
+sr[idx] = val # 增加元素
+
+sr.head(n=5)
+sr.tail(n=5)
+sr.take([idx lst])
+
+# idx 为数字下标序号, index 为
+sr[idx/index] 获取单元素
+sr[[idx/index, ...]] 依据
+sr[start:stop] 使用 idx 不包含 stop, 使用 index 包含 stop.
+
+# 时序
+pd.Series(lst/arr, index=pd.to_datetime(date_str_list))
+pd.Series(lst/arr, index=[datetime(..), ..])
+# 时序索引优化
+ts["Ymd"] / tm["Y-m-d"] / tm["m/d/Y"]
+ts["Ym":"Ym"] / ts["Ym"]
+ts.truncate(after="Ymd") 去掉该日期之后的
+# +滞后, -前移操作(数组值移动几个位置)
+ts.shift(±n)
+# 重新取样, 例如将日数据转换成月数据
+ts.resample("M/MS", how="first/mean...")
+```
+
+#### DataFrame 就是类似 mysql 的数据表
+
+```python
+# 随机数据
+df = pd.DataFrame(np.random.randn(m,n), index=pd.to_datetime(list), columns=list)
+
+# 读取 csv/txt, header=0 表示首行是头, names各列变量名(有 header 时省略)
+df = pd.read_csv("filename", sep=",", header=None)
+df = pd.read_table("filename", sep="\t", header=None, names=None)
+# 读取 mysql 数据表
+import MySQLdb
+conn = MySQLdb.connect(host="", port=3306, user="", passwd="", db="")
+df = pd.read_sql("select * from ...", conn)
+conn.close()
+
+# 控制台显示
+df  df.head(n)  df.tail(n)
+df.columns  df.index  df.values 二维数组
+df.describe() 描述性统计
+
+# 按行切片 => 列不能切片
+df[idxStart:idxStop]
+# 取某些列
+df[["A","C"]]
+# 满足条件
+df[df["A"]>0]
+# 行列共同操作
+df.loc[row行-date类型, column列-标签] 使用 name "A", "B", "C"..
+df.iloc[row行-idx类型, column列-索引], 使用 idx 0,1,2..
+df.ix[row 行, column列] 自动判断标签/索引
+
+# 转置
+df.T
+df.sort(axis=0/1, columns=None, ascending=True) 默认 axis=0 按照index日期排序, axis=1 排序列的左右顺序(貌似用处不大); 以某一列进行排序要指定 columns.
+df.rank(axis=0/1, ascending=True) 返回轴上排名表
+
+# 增加一列, 列数据是 list 列表, 列索引是以 Ymd 开始的 n 天, 一般 n 就是 list 数据长度
+col = pd.Series(list, index=pd.date_range("YmdStartDate", periods=n))
+df["E"] = col
+
+# 合并
+pd.concat([df, sr]) - join
+df.append() - multi-insert
+pd.concat([df, df], join="inner")
+
+# 删除
+df.drop(dates[1:3]) 删除行(返回新表)
+df.drop("A", axis=1) 删除列(返回新表)
+del df["A"] 删除列(作用于原表)
+
+# 替换 - 取到位置直接赋值
+df.loc[:, "A"] = np.arange(0, len(df)) 整列
+df.loc[dates[1], "B"] = 0 替换指定位置
+df.loc[1, 1] = 0 替换指定位置
+
+# 重置索引返回新表 - 老表没有的数据新表为 NaN
+df.reindex(pd.date_range("Ymd", periods=n), column=list)
+
+# 运算 - Series 的 index 与 DateFrame 的 column 对应. 无法预算值为 NaN
+Series: [1,2,3], index=list("ABC")
+DataFrame:
+.. A  B  C
+d1 .. .. ..
+d2 .. .. ..
+# 运算 - DataFrame 与 DataFrame 则按行列对应计算, 无法计算值为 NaN
+# 缺失值可以在使用运算函数的时候, 指定默认值
+
+# 应用函数
+df.apply(func, axis=0)
+df.apply(max, axis=0)
+df.apply(lambda x: x.max() - x.min(), axis=1)
+```
+
+#### 数据规整化
+
+**判断缺失值** df.isnull() / df.notnull()
+
+DataFrame 对象判断 NaN / None 时返回一个 True|False 的 DataFrame 对象.
+
+df.A[df.A.notnull()] 选出有数值的数据
+
+**填充缺失数据** df.fillna(...)
+
+**删除缺失值** df.dropna(...)
+
+**判断重复行/删除** df.duplicated([columeName]), df.drop_duplicates([columnName]) 默认不传列名, 匹配所有列
+
+## Matplotlib 绘图
+
+@TODO 绘图部分
+
+
+
+
+
+
+
+
+
 
